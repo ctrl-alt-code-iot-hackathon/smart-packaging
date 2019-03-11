@@ -42,7 +42,7 @@ def track_cust():
     try:
         user = mongo.db.orders
         p = request.form
-        data = user.find({'id':p['_id']})
+        data = user.find({'_id':p['_id']})
         for i in data:
             ans = i
         return "[1], [2], [3]".format(ans['status'], ans['current'], ans['longitude'], ans['latitude'])
@@ -63,13 +63,7 @@ def add_route():
     try:
         p = request.form
         users = mongo.db.office
-        up_lis = users.find({'location':p['from']})
-
-        # might be
-        for i in up_lis:
-            ans = i['adj_office']
-        ans.append(p['to'])
-        users.update({'location':p['from']},{ '$set': {'adj_office':ans}})
+        users.update({'location':p['from']},{ '$push': {'adj_office':{'to':p['to'],'cost':p['cost']}}})
         return '0'
     except:
         return '1'
@@ -88,7 +82,7 @@ def admin_():
             return '1'
     except:
         return '1'
-#
+
 # @app.route('/hardware', methods=['POST','GET'])
 # def hardware():
 #     try:
@@ -104,13 +98,16 @@ def admin_():
 #         if p['vibration'] >= threshold:
 #             ans['vibration']='Bad'
 #         ans['longitude'] = p['longitude']
-#         ans['latitude'] = p[]
-#
+#         ans['latitude'] = p['latitude']
 #         #condition if in any of the office
-#
-#
-#
-#
+#         user.
+#     except:
+#         return '1'
+
+
+
+
+
 
 
 @app.route('/track_admin', methods=['POST','GET'])
