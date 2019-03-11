@@ -24,17 +24,17 @@ def office_Add():
     except:
         return '1'
 
-@app.route('/add_order', methods=['POST','GET'])
-def order_Add():
-    try:
-        user = mongo.db.orders
-        p = request.form
-        user.insert({'address':})
+# @app.route('/add_order', methods=['POST','GET'])
+# def order_Add():
+#     try:
+#         user = mongo.db.orders
+#         p = request.form
+#         user.insert({'address':})
 
-
-@app.route('/main_page',methods=['POST','GET'])
-def main_page()
-    try:
+#
+# @app.route('/main_page',methods=['POST','GET'])
+# def main_page()
+#     try:
 
 if __name__ == '__main__':
     app.run(debug=True)
