@@ -34,9 +34,9 @@ def order_Add():
 
         # shortest path
         path = []
-        user.insert({'driver':'Not assigned','vibration':'Good','longitude':'','latitude':'','status':'at_office', 'current':p['from_city'],
-                     'from_address':p['from_address'],'from_city':p['from_city'],'from_pincode':p['from_pincode'],'to_address':p['to_address'],
-                     'to_city':p['to_city'],'to_pincode':p['to_pincode'],'category':p['category'],'path':path,'tempered':'False'})
+        user.insert({'driver':'Not assigned','vibration':'Good','longitude':'','latitude':'','status':'at_office', 'current':p['from'],
+                     'from_address':p['from_address'],'from_city':p['from'],'from_pincode':p['from_pin'],'to_address':p['to_address'],
+                     'to_city':p['to'],'to_pincode':p['to_pin'],'category':p['category'],'path':path,'tampered':'False'})
         return '0'
     except:
         return '1'
