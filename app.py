@@ -2,7 +2,7 @@ from flask import Flask,request
 from flask_pymongo import PyMongo
 from ast import literal_eval
 from bson.objectid import ObjectId
-
+from priodict import priorityDictionary
 
 app = Flask(__name__)
 
@@ -91,7 +91,7 @@ def admin_():
     except:
         return '1'
 
-@app.route('/hardware', methods=['POST','GET'])
+@app.route('/update-data', methods=['POST','GET'])
 def hardware():
     try:
         user = mongo.db.orders
@@ -123,7 +123,7 @@ def hardware():
     except:
         return '1'
 
-@app.route('/driver',methods=['POST','GET'])
+@app.route('/driver-req-packages',methods=['POST','GET'])
 def driver_():
     try:
         user = mongo.db.orders
@@ -152,5 +152,49 @@ def track_admin():
     #     return '1'
 
 
+def get_priorityDict():
+    office = mongo.db.office
+    allOffices = office.find()
+    G = dict()
+    for eachOffice in allOffices:
+        G[eachOffice['name']] = dict()
+        for eachAdjOffice in eachOffice['adj_office']:
+            G[eachOffice['name']][eachAdjOffice['name']] = int(eachAdjOffice['cost'])
+    return G
+
+def Dijkstra(G,start,end=None):
+	D = {}	# dictionary of final distances
+	P = {}	# dictionary of predecessors
+	Q = priorityDictionary()   # est.dist. of non-final vert.
+	Q[start] = 0
+	
+	for v in Q:
+		D[v] = Q[v]
+		if v == end: break
+		print(G)
+		for w in G[v]:
+			vwLength = D[v] + G[v][w]
+			if w in D:
+				if vwLength < D[w]:
+					print("valueerror")
+			elif w not in Q or vwLength < Q[w]:
+				Q[w] = vwLength
+				P[w] = v
+	
+	return (D,P)
+			
+def shortestPath(G,start,end):
+	D,P = Dijkstra(G,start,end)
+	Path = []
+	while 1:
+		Path.append(end)
+		if end == start: break
+		end = P[end]
+	Path.reverse()
+	return Path
+    
+
 if __name__ == '__main__':
     app.run(debug=True)
+    print(get_priorityDict())
+    print(shortestPath(get_priorityDict(), 'Lynn', 'Brooklyn'))
