@@ -140,17 +140,16 @@ def driver_():
 
 @app.route('/track_admin', methods=['POST','GET'])
 def track_admin():
-    try:
-        user = mongo.db.orders
-        p = request.form
-        data = user.find({'id':(p['_id']).str})
-        for i in data:
-            ans = i
-        #route = str(ans['path'])
-        return "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(ans['current'], ans['longitude'], ans['latitude'], ans['next'],
-                                                                   ans['status'], ans['vibration'], ans['driver'], ans['tampered'])
-    except:
-        return '1'
+    # try:
+    user = mongo.db.orders
+    p = request.get_data()
+    a = p.decode("utf-8")
+    p = literal_eval(a)
+    ans = user.find_one({"_id": ObjectId(p['order_id'])})
+    #route = str(ans['path'])
+    return "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(ans['current'], ans['longitude'], ans['latitude'], ans['next'], ans['status'], ans['vibration'], ans['driver'], ans['tampered'])
+    # except:
+    #     return '1'
 
 
 if __name__ == '__main__':
