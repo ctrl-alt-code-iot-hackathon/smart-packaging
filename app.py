@@ -69,7 +69,7 @@ def add_route():
     try:
         p = request.form
         users = mongo.db.office
-        users.update({'location':p['from']},{ '$push': {'adj_office':{'to':p['to'],'cost':p['cost']}}})
+        users.update({'name':p['from']},{ '$push': {'adj_office':{'to':p['to'],'cost':p['cost']}}})
         return '0'
     except:
         return '1'
