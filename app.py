@@ -71,7 +71,7 @@ def add_route():
         a = p.decode("utf-8")
         p = literal_eval(a)
         users = mongo.db.office
-        users.update({'name':p['from']},{ '$push': {'adj_office':{'to':p['to'],'cost':p['cost']}}})
+        users.update({'name':p['from']},{ '$push': {'adj_office':{'name':p['to'],'cost':p['cost']}}})
         return '0'
     except:
         return '1'
@@ -148,7 +148,7 @@ def track_admin():
             ans = i
         #route = str(ans['path'])
         return "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(ans['current'], ans['longitude'], ans['latitude'], ans['next'],
-                                                                   ans['status'], ans['vibration'], ans['driver'], ans['tempered'])
+                                                                   ans['status'], ans['vibration'], ans['driver'], ans['tampered'])
     except:
         return '1'
 
