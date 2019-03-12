@@ -67,7 +67,9 @@ def off_list():
 @app.route('/add_route', methods=['POST','GET'])
 def add_route():
     try:
-        p = request.form
+        p = request.get_data()
+        a = p.decode("utf-8")
+        p = literal_eval(a)
         users = mongo.db.office
         users.update({'name':p['from']},{ '$push': {'adj_office':{'to':p['to'],'cost':p['cost']}}})
         return '0'
