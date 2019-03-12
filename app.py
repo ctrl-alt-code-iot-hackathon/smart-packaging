@@ -59,7 +59,7 @@ def track_cust():
 def off_list():
     try:
         user = mongo.db.office
-        off_list = user.distinct('location')
+        off_list = user.distinct('name')
         return str(off_list)[1:-1]
     except:
         return '1'
