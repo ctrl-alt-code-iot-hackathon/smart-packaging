@@ -16,6 +16,7 @@ def office_Add():
     try:
         user = mongo.db.office
         p = request.get_data()
+        print(p)
         a = p.decode("utf-8")
         p = literal_eval(a)
         user.insert({'location':p['location'],'pincode':p['pincode'],'longitude':p['longitude'],'latitude':p['latitude'], 'adj_office':[]})
