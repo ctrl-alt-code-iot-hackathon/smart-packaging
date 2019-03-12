@@ -13,16 +13,16 @@ mongo = PyMongo(app)
 
 @app.route('/add_office',methods=['POST','GET'])
 def office_Add():
-    try:
-        user = mongo.db.office
-        p = request.get_data()
-        print(p)
-        a = p.decode("utf-8")
-        p = literal_eval(a)
-        user.insert({'name':p['name'],'address':p['address'],'longitude':p['longitude'],'latitude':p['latitude'], 'adj_office':[]})
-        return '0'
-    except:
-        return '1'
+    #try:
+    user = mongo.db.office
+    p = request.get_data()
+    print(p)
+    a = p.decode("utf-8")
+    p = literal_eval(a)
+    user.insert({'name':p['name'],'address':p['address'],'longitude':p['longitude'],'latitude':p['latitude'], 'adj_office':[]})
+    return '0'
+    # except:
+    #     return '1'
 
 @app.route('/add_order', methods=['POST','GET'])
 def order_Add():
