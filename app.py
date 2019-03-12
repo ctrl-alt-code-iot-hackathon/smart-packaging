@@ -1,6 +1,7 @@
 from flask import Flask,request
 from flask_pymongo import PyMongo
 from ast import literal_eval
+from bson.objectid import ObjectId
 
 
 app = Flask(__name__)
@@ -14,7 +15,9 @@ mongo = PyMongo(app)
 def office_Add():
     try:
         user = mongo.db.office
-        p = request.form
+        p = request.get_data()
+        a = p.decode("utf-8")
+        p = literal_eval(a)
         user.insert({'location':p['location'],'pincode':p['pincode'],'longitude':p['longitude'],'latitude':p['latitude'], 'adj_office':[]})
         return '0'
     except:
@@ -24,11 +27,12 @@ def office_Add():
 def order_Add():
     try:
         user = mongo.db.orders
-        p = request.form
+        p = request.get_data()
+        a = p.decode("utf-8")
+        p = literal_eval(a)
 
         # shortest path
         path = []
-
         user.insert({'driver':'Not assigned','vibration':'Good','longitude':'','latitude':'','status':'at_office', 'current':p['from_city'],
                      'from_address':p['from_address'],'from_city':p['from_city'],'from_pincode':p['from_pincode'],'to_address':p['to_address'],
                      'to_city':p['to_city'],'to_pincode':p['to_pincode'],'category':p['category'],'path':path,'tempered':'False'})
@@ -41,11 +45,12 @@ def order_Add():
 def track_cust():
     try:
         user = mongo.db.orders
-        p = request.form
-        data = user.find({'_id':p['_id']})
-        for i in data:
-            ans = i
-        return "[1], [2], [3], [4]".format(ans['status'], ans['current'], ans['longitude'], ans['latitude'])
+        p = request.get_data()
+        a = p.decode("utf-8")
+        p = literal_eval(a)
+        print(str(p['_id']))
+        ans = user.find_one({"_id":ObjectId(p['_id'])})
+        return "{0}, {1}, {2}, {3}".format(ans['status'], ans['current'], ans['longitude'], ans['latitude'])
     except:
         return '1'
 
@@ -54,7 +59,7 @@ def off_list():
     try:
         user = mongo.db.office
         off_list = user.distinct('location')
-        return str(off_list[1:-1])
+        return str(off_list)[1:-1]
     except:
         return '1'
 
@@ -110,7 +115,7 @@ def hardware():
                         break
                     c = c+1
                 if c == len(ans['route'])-1:
-                    return c-1;
+                    return c-1
                 user.update({'_id': p['_id']},{'$set':{'current':ans['next'], 'status':'At office', 'next':ans['route'][c+1],'tempered':p['tempered']}})
     except:
         return '1'
@@ -135,11 +140,11 @@ def track_admin():
     try:
         user = mongo.db.orders
         p = request.form
-        data = user.find({'id':p['_id']})
+        data = user.find({'id':(p['_id']).str})
         for i in data:
             ans = i
-        route = str(ans['path'])
-        return "[1], [2], [3], [4], [5], [6], [7], [8]".format(ans['current'], ans['longitude'], ans['latitude'], ans['next'],
+        #route = str(ans['path'])
+        return "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(ans['current'], ans['longitude'], ans['latitude'], ans['next'],
                                                                    ans['status'], ans['vibration'], ans['driver'], ans['tempered'])
     except:
         return '1'
