@@ -109,17 +109,17 @@ def hardware():
         ans['latitude'] = p['latitude']
         #condition if in any of the office
         if abs(p['longitude']-ans['longitude'])>10 and abs(p['latitude']-ans['latitude'])>10:
-            if ans['current'] == ans['route'][-1]:
+            if ans['current'] == ans['path'][-1]:
                 user.update({'_id': p['_id']}, {'$set': {'status':'Delivered'}})
             else:
                 c = 0
-                for i in range(0,len(ans['route'])-1):
-                    if ans['next'] == ans['route'][i]:
+                for i in range(0,len(ans['path'])-1):
+                    if ans['next'] == ans['path'][i]:
                         break
                     c = c+1
-                if c == len(ans['route'])-1:
+                if c == len(ans['path'])-1:
                     return c-1
-                user.update({'_id': p['_id']},{'$set':{'current':ans['next'], 'status':'At office', 'next':ans['route'][c+1],'tempered':p['tempered']}})
+                user.update({'_id': p['_id']},{'$set':{'current':ans['next'], 'status':'At office', 'next':ans['path'][c+1],'tampered':p['tampered']}})
     except:
         return '1'
 
